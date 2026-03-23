@@ -1,27 +1,42 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
-
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import Content from "./components/Content";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+import Register from "./components/Register";
+import Cart from "./components/Cart";
+import Orders from "./components/Orders";
+import App1 from "./components/App1";
+import App2 from "./components/App2";
+import App3 from "./components/App3";
+import App4 from "./components/App4";
+import App5 from "./components/App5";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createContext, useState } from "react";
+export const AppContext = createContext();
 function App() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await axios.get("http://localhost:8080/api/products");
-      setProducts(res.data);
-    };
-
-    fetchProducts();
-  }, []);
-
+  const [user, setUser] = useState({});
+  const [cart, setCart] = useState([]);
   return (
-    <div>
-      <ul>
-        {products.map((product) => (
-          <li key={product._id}>{product.name}</li>
-        ))}
-      </ul>
-    </div>
+    <AppContext.Provider value={{ user, setUser, cart, setCart }}>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route index element={<Content />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="app1" element={<App1 />} />
+          <Route path="app2" element={<App2 />} />
+           <Route path="app3" element={<App3 />} />
+            <Route path="app4" element={<App4 />} />
+             <Route path="app5" element={<App5 flag={2} />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="logout" element={<Logout />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </AppContext.Provider>
   );
 }
-
 export default App;
